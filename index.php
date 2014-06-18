@@ -1,7 +1,8 @@
-﻿<!DOCTYPE html>
+﻿<?php require_once("config.php"); ?>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>birk.it | Short URL's</title>
+    <title><?php echo BASIC_DOMAIN_NAME; ?> | Short URL's</title>
 	<meta charset="utf-8" />
 	<meta name="description" content="birk.it URL shortening service.">
     <link rel="stylesheet" href="css/main.css" />
@@ -10,7 +11,7 @@
 </head>
 <body>
     <div class="header">
-		<h1>birk.it URL shortner</h1>
+		<h1><?php echo BASIC_DOMAIN_NAME; ?>  URL shortner</h1>
 		<h2>Enter a long URL, get a nice short one back.</h2>
 	</div>
 	<div class="container">
