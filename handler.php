@@ -104,7 +104,7 @@ if(isset($_POST['input'])) //We are in generate mode
 	$inputurl = rtrim($inputurl,"/");
 	
 	//Check if link is already shortened, and return the full URL instead
-	if(preg_match("/birk.it/i", $inputurl))
+	if(preg_match("/".BASIC_DOMAIN_NAME."/i", $inputurl))
 	{
 		$short = substr($inputurl, strlen($inputurl)-8);
 		$original = GetOriginalUrl($short);
@@ -125,5 +125,5 @@ else if(isset($_GET['url'])) //We are in fetch mode
 		Redirect($originalurl);
 	Redirect(DOMAIN_NAME); //Not found, go home
 }
-exit(); //Do nothing when not called correctly
+Redirect(DOMAIN_NAME); //Do nothing when not called correctly
 ?>
