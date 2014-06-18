@@ -68,9 +68,7 @@ function GetOriginalURL($shorturl)
 //-----------------------------------------------------------------------------
 function Redirect($url)
 {
-	http_response_code(302);
-	header( 'Location: '.$url );
-	exit();
+	http_response_code(302); header( 'Location: '.$url ); exit();
 }
 
 //-----------------------------------------------------------------------------
@@ -80,9 +78,7 @@ function Redirect($url)
 //-----------------------------------------------------------------------------
 function Finish($msg, $code)
 {
-	http_response_code($code);
-	echo $msg;
-	exit();
+	http_response_code($code); exit($msg);
 }
 
 //-----------------------------------------------------------------------------
@@ -90,16 +86,11 @@ function Finish($msg, $code)
 //-----------------------------------------------------------------------------
 if(isset($_POST['input'])) //We are in generate mode
 {
-	if($_POST['input'] == "") //Sanity
-		Finish("URL cannot be blank", 400);
+	if($_POST['input'] == "") Finish("URL cannot be blank", 400);
+	if(strlen($_POST['input']) > 2048) Finish("Input URL too long!", 400);
 		
-	if(strlen($_POST['input']) > 2048) //Overflow
-		Finish("Input URL too long!", 400);
-		
-	$inputurl = strtolower($_POST['input']);
-			
 	//Remove http:// or https://
-	$inputurl = preg_replace('#^https?://#', '', $inputurl);
+	$inputurl = preg_replace('#^https?://#', '', strtolower($_POST['input']));
 	//Remove a trailing backslash
 	$inputurl = rtrim($inputurl,"/");
 	

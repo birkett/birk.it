@@ -1,17 +1,8 @@
-﻿//Hide or show the input box
-function HideBox() { $(".box").hide("slow"); }
-function ShowBox() { $(".box").show("slow"); }
+﻿function addslashes(str) { return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0'); }
 
-//Make a string safe client side
-function addslashes(str)
-{
-    return (str + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-}
-
-//Actual work 
 function doaction()
 {
-    HideBox();
+    $(".box").hide("slow");
 	//Only proceed when the animation is finished
     $(".box").promise().done(function () {
 		//Remove any decoration from the box
@@ -36,12 +27,10 @@ function doaction()
             }
         }
         xmlhttp.open("POST", "handler.php", true);
-
         var inputurl = encodeURIComponent(addslashes(document.getElementById("box").value));
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("&input=" + inputurl);
-
     });
 	//When done, show the box again
-    ShowBox();
+    $(".box").show("slow");
 }
