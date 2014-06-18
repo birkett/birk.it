@@ -109,7 +109,7 @@ if(isset($_POST['input'])) //We are in generate mode
 		$short = substr($inputurl, strlen($inputurl)-8);
 		$original = GetOriginalUrl($short);
 		if($original)
-			Finish($original, 200);
+			Finish("http://".$original, 200); //Add the http back in
 		Finish("Not found!", 400);
 	}
 	
@@ -122,7 +122,7 @@ else if(isset($_GET['url'])) //We are in fetch mode
 	$originalurl = GetOriginalURL(GetDatabase()->EscapeString($_GET['url']));
 
 	if($originalurl) //If found, redicrect
-		Redirect($originalurl);
+		Redirect("http://".$originalurl);
 	Redirect(DOMAIN_NAME); //Not found, go home
 }
 Redirect(DOMAIN_NAME); //Do nothing when not called correctly
