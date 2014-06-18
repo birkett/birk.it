@@ -21,7 +21,7 @@
 		</form>
 	</div>
 	<div class="infobox">
-		<h2>Super secred hidden features</h2>
+		<h2>Super secret hidden features</h2>
 		<p>Enter a shortened URL to get the original</p>
 		<p>If someone has already shortened the same URL, you will get the same result</p>
 		<p>URL's don't have to be valid. Hide abusive messages for your friends!</p>
