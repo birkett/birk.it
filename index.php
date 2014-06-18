@@ -21,7 +21,8 @@
 		</form>
 	</div>
 	<div class="infobox">
-		<h2>Super secret hidden features</h2>
+		<p>Made by <a href="http://www.a-birkett.co.uk" target="_blank">Anthony Birkett</a> for personal use, but open for the public.</p>
+		<h3>Super secret hidden features</h3>
 		<p>Enter a shortened URL to get the original</p>
 		<p>If someone has already shortened the same URL, you will get the same result</p>
 		<p>URL's don't have to be valid. Hide abusive messages for your friends!</p>
@@ -34,6 +35,11 @@
 		<script>
 		(adsbygoogle = window.adsbygoogle || []).push({});
 		</script>
+	</div>
+	<div class="infobox">
+	<p>&copy; <?php echo date('Y'); ?> Anthony Birkett</p>
+	<p>By using this website, you agree to do so at your own risk. I take no responsibility for content linked to from this website, and make no guarantees of availability.
+			Cookies are not used by this website, but may be used by Google AdSense.</p>
 	</div>
 </body>
 </html>
