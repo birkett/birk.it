@@ -12,7 +12,7 @@
 <body>
     <div class="header">
 		<h1><?php echo BASIC_DOMAIN_NAME; ?>  URL shortner</h1>
-		<h2><?php $quote = array ("Enter a long URL, get a nice short one back.", "The opposite of a Swedish pump."); echo $quote[rand(0,1)]; ?></h2>
+		<h2><?php echo $QUOTES[rand(0,count($QUOTES)-1)]; ?></h2>
 	</div>
 	<div class="container">
 		<form>
