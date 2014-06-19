@@ -12,7 +12,7 @@
 <body>
     <div class="header">
 		<h1><?php echo BASIC_DOMAIN_NAME; ?>  URL shortner</h1>
-		<h2>Enter a long URL, get a nice short one back.</h2>
+		<h2><?php $quote = array ("Enter a long URL, get a nice short one back.", "The opposite of a Swedish pump."); echo $quote[rand(0,1)]; ?></h2>
 	</div>
 	<div class="container">
 		<form>
@@ -27,14 +27,8 @@
 		<p>If someone has already shortened the same URL, you will get the same result</p>
 		<p>URL's don't have to be valid. Hide abusive messages for your friends!</p>
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<!-- Footer -->
-		<ins class="adsbygoogle"
-			 style="display:inline-block;width:728px;height:90px"
-			 data-ad-client="ca-pub-3491498523960183"
-			 data-ad-slot="5861200158"></ins>
-		<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
+		<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-3491498523960183" data-ad-slot="5861200158"></ins>
+		<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 	</div>
 	<div class="infobox">
 	<p>&copy; <?php echo date('Y'); ?> Anthony Birkett</p>
