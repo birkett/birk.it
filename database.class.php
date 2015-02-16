@@ -8,22 +8,23 @@
 class Database
 {
 	private $mLink; //Store the connection link
-	private $host, $port, $user, $pass, $db;
 	
 	//-----------------------------------------------------------------------------
 	// Constructor
-	//		In: Database name
+	//		In: none
 	//		Out: none
 	//-----------------------------------------------------------------------------
-	public function __construct($requesteddb)
+	public function __construct()
 	{
-		$this->host = DATABASE_HOSTNAME;
-		$this->port = DATABASE_PORT;
-		$this->user = DATABASE_USERNAME;
-		$this->pass = DATABASE_PASSWORD;
-		$this->db = $requesteddb;
-
-		$this->Connect($this->host, $this->port, $this->user, $this->pass, $this->db);
+        try {
+            $this->mLink = new PDO(
+                "sqlite:",
+				DATABASE_FILENAME,
+                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+            );
+        } catch (\PDOException $e) {
+            echo "Unable to connect to database: " . $this->mLink->errorInfo()[2];
+        }
 	}
 
 	//-----------------------------------------------------------------------------
@@ -33,66 +34,39 @@ class Database
 	//-----------------------------------------------------------------------------
 	public function __destruct()
 	{
-		$this->Close();
+		$this->mLink = null;
 	}
 	
 	//-----------------------------------------------------------------------------
-	// Close a connection
+	// getInstance
 	//		In: none
 	//		Out: none
 	//-----------------------------------------------------------------------------
-	private function Close()
-	{
-		if($this->mLink) mysqli_close($this->mLink);
-	}
-	
-	//-----------------------------------------------------------------------------
-	// Create a connection
-	//		In: Database connection details
-	//		Out: none
-	//-----------------------------------------------------------------------------
-	public function Connect($host, $port, $user, $pass, $db)
-	{
-		$this->mLink = mysqli_connect($host .':'. $port, $user, $pass);
-		if(!$this->mLink) { die("Unable to connect to database: " . mysqli_connect_error()); }
-		
-		$this->SelectDB($db);
-	}
-	
-	//-----------------------------------------------------------------------------
-	// Get MySQL server version info
-	//		In: none
-	//		Out: Version string
-	//-----------------------------------------------------------------------------
-	public function ServerInfo()
-	{
-		return mysqli_get_server_info($this->mLink);
-	}
-	
-	//-----------------------------------------------------------------------------
-	// Select a database
-	//		In: Database name
-	//		Out: none
-	//-----------------------------------------------------------------------------
-	private function SelectDB($db)
-	{
-		if(!$this->mLink) { return; }
-		$result = mysqli_select_db($this->mLink, $db);
-		if(!$result) { die("Unable to select database: " . mysqli_error($this->mLink)); }
-	}
-	
+    public static function getInstance()
+    {
+        static $database = null;
+        if (!isset($database)) {
+            $database = new Database();
+        }
+        return $database;
+    }
+
 	//-----------------------------------------------------------------------------
 	// Run a query
-	//		In: Query string
-	//		Out: MySQLi result
+	//		In: Query string, Parameters array
+	//		Out: Result
 	//-----------------------------------------------------------------------------
-	public function RunQuery($query)
-	{
-		if(!$this->mLink) { return; }
-		$result = mysqli_query($this->mLink, $query);
-		if(!$result) { die("Query failed: " . mysqli_error($this->mLink)); }
-		return $result;
-	}
+    public function runQuery($query, $params = array())
+    {
+        if (!$this->mLink) {
+            return;
+        }
+        $statement = $this->mLink->prepare($query);
+        $statement->execute($params);
+        if ($statement->columnCount() != 0) {
+            return $statement->fetchAll();
+        }
+    }
 	
 	//-----------------------------------------------------------------------------
 	// Get single row from a result
@@ -100,10 +74,17 @@ class Database
 	//		Out: Single row
 	//   Returns next row on each call until end, then NULL
 	//-----------------------------------------------------------------------------
-	public function GetRow($result)
-	{
-		return mysqli_fetch_row($result);
-	}
+    public function getRow(&$result)
+    {
+        if (!$result) {
+            return;
+        }
+        if (count($result) != 0) {
+            return array_shift($result);
+        } else {
+            return null;
+        }
+    }
 	
 	//-----------------------------------------------------------------------------
 	// Get number of rows
@@ -111,18 +92,11 @@ class Database
 	//		Out: Number of rows (can be fetched with GetRow()
 	//-----------------------------------------------------------------------------
 	public function GetNumRows($result)
-	{
-		return mysqli_num_rows($result);
-	}
-	
-	//-----------------------------------------------------------------------------
-	// Escape string
-	//		In: Raw string
-	//		Out: Escaped string
-	//-----------------------------------------------------------------------------
-	public function EscapeString($string)
-	{
-		return mysqli_real_escape_string($this->mLink, $string);
-	}
+    {
+        if (!$result) {
+            return;
+        }
+        return count($result);
+    }
 }
 ?>
