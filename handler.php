@@ -40,11 +40,11 @@ function AddNewURL($inputurl)
 //-----------------------------------------------------------------------------
 function GetShortURL($longurl)
 {
-	$result = Database::getInsance()->RunQuery(
+	$result = Database::getInstance()->RunQuery(
 		"SELECT short_url FROM urls WHERE original_url = :longurl",
 		array(":longurl" => $longurl)
 	);
-	$row = Database::getInsance()->GetRow($result);
+	$row = Database::getInstance()->GetRow($result);
 	if(isset($row[0])) { return $row[0]; } return false;
 }
 
@@ -55,7 +55,7 @@ function GetShortURL($longurl)
 //-----------------------------------------------------------------------------
 function GetOriginalURL($shorturl)
 {
-	$result = Database::getInsance()->RunQuery(
+	$result = Database::getInstance()->RunQuery(
 		"SELECT original_url FROM urls WHERE short_url=:shorturl",
 		array(":shorturl" => $shorturl)
 	);
