@@ -7,17 +7,6 @@ require_once("config.php");
 require_once("database.class.php");
 
 //-----------------------------------------------------------------------------
-// GetDatabase()
-//		Out: Returns a Database handle
-//-----------------------------------------------------------------------------
-function GetDatabase()
-{
-	static $db = NULL;
-	if(!isset($db))	{ $db = new Database(DATABASE_NAME); }
-	return $db;
-}
-
-//-----------------------------------------------------------------------------
 // Generate()
 //		Out: 8 character random alphanumeric string
 //-----------------------------------------------------------------------------
@@ -35,7 +24,13 @@ function Generate()
 //-----------------------------------------------------------------------------
 function AddNewURL($inputurl)
 {
-	GetDatabase()->RunQuery("INSERT INTO urls(original_url, short_url) VALUES( '" . $inputurl . "','" . Generate() . "')");
+	Database::getInstance()->RunQuery(
+		"INSERT INTO urls(original_url, short_url) VALUES(:inputurl, :generated)",
+		array(
+			":inputurl" => $inputurl,
+			":generated" => Generate()
+		)
+	);
 }
 
 //-----------------------------------------------------------------------------
@@ -45,8 +40,11 @@ function AddNewURL($inputurl)
 //-----------------------------------------------------------------------------
 function GetShortURL($longurl)
 {
-	$result = GetDatabase()->RunQuery("SELECT short_url FROM urls WHERE original_url ='" . $longurl . "'");
-	$row = GetDatabase()->GetRow($result);
+	$result = Database::getInsance()->RunQuery(
+		"SELECT short_url FROM urls WHERE original_url = :longurl",
+		array(":longurl" => $longurl)
+	);
+	$row = Database::getInsance()->GetRow($result);
 	if(isset($row[0])) { return $row[0]; } return false;
 }
 
@@ -57,8 +55,11 @@ function GetShortURL($longurl)
 //-----------------------------------------------------------------------------
 function GetOriginalURL($shorturl)
 {
-	$result = GetDatabase()->RunQuery("SELECT original_url FROM urls WHERE short_url='" . $shorturl . "'");
-	$row = GetDatabase()->GetRow($result);
+	$result = Database::getInsance()->RunQuery(
+		"SELECT original_url FROM urls WHERE short_url=:shorturl",
+		array(":shorturl" => $shorturl)
+	);
+	$row = Database::getInsance()->GetRow($result);
 	if(isset($row[0])) { return $row[0]; } return false;
 }
 
