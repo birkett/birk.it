@@ -1,13 +1,76 @@
-﻿body { font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; color: #ccc; margin: 0; background-image: url("/img/bg.png"); }
-.header { width: 100%; height: 127px; background-image: url("/img/header_bg.png"); text-align: center; }
-.container { margin: auto; width: 50%; text-align: center; margin-top: 30px; }
-.infobox { border-image: url("/img/aero.png") 32 32 fill round; border-width: 32px; margin-top: 15px; min-width: 728px; max-width: 50%; text-align: center; margin-left: auto; margin-right: auto; }
-.box { border-image: url("/img/aero2.png") 32 32 fill round; border-width: 10px; width: 94%; font-size: 24px; }
-.success { border-image: url("/img/success.png") 32 32 round; border-width: 10px; }
-.failed { border-image: url("/img/failed.png") 32 32 round; border-width: 10px; }
-a, a.visited { text-decoration: none; border-style: none; color: #87c2ed; }
-h1 { font-size: 4rem; font-weight: 300; margin: 0; color: #ccc; }
-h2 { font-size: 1.25rem; margin: 0; color: #ccc; }
-.submit { background: #222 url(/img/button_over.png) repeat-x; display: inline-block; padding: 5px 10px 6px; color: #fff; text-decoration: none; font-weight: bold; line-height: 1; border-radius: 5px;
-box-shadow: 0 1px 3px #999; text-shadow: 0 -1px 1px #222; border: 0; border-bottom: 1px solid #222; position: relative; cursor: pointer; width: 200px; height: 50px;
+﻿body {
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    color: #ccc;
+    margin: 0;
+    background-image: url("/img/bg.png");
+}
+.header {
+    width: 100%;
+    height: 127px;
+    background-image: url("/img/header_bg.png");
+    text-align: center;
+}
+.container {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    margin-top: 30px;
+}
+.infobox {
+    border-image: url("/img/aero.png") 32 32 fill round;
+    border-width: 32px;
+    margin-top: 15px;
+    min-width: 728px;
+    max-width: 50%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.box {
+    border-image: url("/img/aero2.png") 32 32 fill round;
+    border-width: 10px;
+    width: 94%;
+    font-size: 24px;
+}
+.success {
+    border-image: url("/img/success.png") 32 32 round;
+    border-width: 10px;
+}
+.failed {
+    border-image: url("/img/failed.png") 32 32 round;
+    border-width: 10px;
+}
+a, a.visited {
+    text-decoration: none;
+    border-style: none;
+    color: #87c2ed;
+}
+h1 {
+    font-size: 4rem;
+    font-weight: 300;
+    margin: 0;
+    color: #ccc;
+}
+h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #ccc;
+}
+.submit {
+    background: #222 url(/img/button_over.png) repeat-x;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px #999;
+    text-shadow: 0 -1px 1px #222;
+    border: 0;
+    border-bottom: 1px solid #222;
+    position: relative;
+    cursor: pointer;
+    width: 200px;
+    height: 50px;
 }
