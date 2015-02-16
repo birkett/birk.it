@@ -5,40 +5,42 @@
 //  Basic class to interface with a MySQLi database
 //-----------------------------------------------------------------------------
 
+namespace ABirkett;
+
 class Database
 {
-	private $mLink; //Store the connection link
-	
-	//-----------------------------------------------------------------------------
-	// Constructor
-	//		In: none
-	//		Out: none
-	//-----------------------------------------------------------------------------
-	public function __construct()
-	{
+    private $mLink; //Store the connection link
+
+    //-----------------------------------------------------------------------------
+    // Constructor
+    //        In: none
+    //        Out: none
+    //-----------------------------------------------------------------------------
+    public function __construct()
+    {
         try {
             $this->mLink = new PDO("sqlite:" . DATABASE_FILENAME);
-			$this->mLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->mLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             echo "Unable to connect to database";
         }
-	}
+    }
 
-	//-----------------------------------------------------------------------------
-	// Destructor
-	//		In: none
-	//		Out: none
-	//-----------------------------------------------------------------------------
-	public function __destruct()
-	{
-		$this->mLink = null;
-	}
-	
-	//-----------------------------------------------------------------------------
-	// getInstance
-	//		In: none
-	//		Out: none
-	//-----------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------
+    // Destructor
+    //        In: none
+    //        Out: none
+    //-----------------------------------------------------------------------------
+    public function __destruct()
+    {
+        $this->mLink = null;
+    }
+
+    //-----------------------------------------------------------------------------
+    // getInstance
+    //        In: none
+    //        Out: none
+    //-----------------------------------------------------------------------------
     public static function getInstance()
     {
         static $database = null;
@@ -48,11 +50,11 @@ class Database
         return $database;
     }
 
-	//-----------------------------------------------------------------------------
-	// Run a query
-	//		In: Query string, Parameters array
-	//		Out: Result
-	//-----------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------
+    // Run a query
+    //        In: Query string, Parameters array
+    //        Out: Result
+    //-----------------------------------------------------------------------------
     public function runQuery($query, $params = array())
     {
         if (!$this->mLink) {
@@ -64,13 +66,13 @@ class Database
             return $statement->fetchAll();
         }
     }
-	
-	//-----------------------------------------------------------------------------
-	// Get single row from a result
-	//		In: MySQLi result
-	//		Out: Single row
-	//   Returns next row on each call until end, then NULL
-	//-----------------------------------------------------------------------------
+
+    //-----------------------------------------------------------------------------
+    // Get single row from a result
+    //        In: MySQLi result
+    //        Out: Single row
+    //   Returns next row on each call until end, then NULL
+    //-----------------------------------------------------------------------------
     public function getRow(&$result)
     {
         if (!$result) {
@@ -82,18 +84,4 @@ class Database
             return null;
         }
     }
-	
-	//-----------------------------------------------------------------------------
-	// Get number of rows
-	//		In: MySQLi result
-	//		Out: Number of rows (can be fetched with GetRow()
-	//-----------------------------------------------------------------------------
-	public function GetNumRows($result)
-    {
-        if (!$result) {
-            return;
-        }
-        return count($result);
-    }
 }
-?>
