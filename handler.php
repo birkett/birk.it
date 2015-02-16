@@ -29,42 +29,30 @@ function Generate()
 function AddNewURL($inputurl)
 {
     Database::getInstance()->runQuery(
-        "INSERT INTO urls(original_url, short_url) VALUES(:inputurl, :generated)",
+        "INSERT INTO urls(original_url, short_url) VALUES(:inurl, :genurl)",
         array(
-            ":inputurl" => $inputurl,
-            ":generated" => Generate()
+            ":inurl" => $inputurl,
+            ":genurl" => Generate()
         )
     );
 }
 
 //-----------------------------------------------------------------------------
-// GetShortURL
-//        In: Long URL
-//        Out: false on not found, short URL string on success
+// SwapURL
+//        In: URL
+//        Out: The opposite URL or false on not found
 //-----------------------------------------------------------------------------
-function GetShortURL($longurl)
+function SwapURL($url)
 {
-    $result = Database::getInstance()->runQuery(
-        "SELECT short_url FROM urls WHERE original_url = :longurl",
-        array(":longurl" => $longurl)
-    );
-    $row = Database::getInstance()->getRow($result);
-    if (isset($row[0])) {
-        return $row[0];
+    if (preg_match("/".BASIC_DOMAIN_NAME."/i", $url)) {
+        $query = "SELECT original_url FROM urls WHERE short_url=:url";
+        $url = substr($url, strlen($url)-8);
+    } else {
+        $query = "SELECT short_url FROM urls WHERE original_url=:url";
     }
-    return false;
-}
-
-//-----------------------------------------------------------------------------
-// GetOriginalURL
-//        In: Short URL
-//        Out: false on not found, long URL string on success
-//-----------------------------------------------------------------------------
-function GetOriginalURL($shorturl)
-{
     $result = Database::getInstance()->runQuery(
-        "SELECT original_url FROM urls WHERE short_url=:shorturl",
-        array(":shorturl" => $shorturl)
+        $query,
+        array(":url" => $url)
     );
     $row = Database::getInstance()->getRow($result);
     if (isset($row[0])) {
@@ -116,25 +104,25 @@ if (isset($_POST['input'])) {
 
     //Check if link is already shortened, and return the full URL instead
     if (preg_match("/".BASIC_DOMAIN_NAME."/i", $inputurl)) {
-        $short = substr($inputurl, strlen($inputurl)-8);
-        $original = GetOriginalUrl($short);
+        $original = SwapURL($inputurl);
         if ($original) {
             Finish("http://".$original, 200); //Add the http back in
         }
         Finish("Not found!", 400);
     }
 
-    if (!GetShortURL($inputurl)) {
+    if (!SwapURL($inputurl)) {
         AddNewUrl($inputurl);
     }
-    Finish(DOMAIN_NAME . GetShortURL($inputurl), 200);
+    Finish(DOMAIN_NAME . SwapURL($inputurl), 200);
 } elseif (isset($_GET['url'])) {
     //We are in fetch mode
-    $originalurl = GetOriginalURL($_GET['url']);
+    $originalurl = SwapURL(DOMAIN_NAME . "/" . $_GET['url']);
 
     if ($originalurl) {
         Redirect("http://".$originalurl); //If found, redicrect
+    } else {
+        Redirect(DOMAIN_NAME); //Not found, go home
     }
-    Redirect(DOMAIN_NAME); //Not found, go home
 }
 Redirect(DOMAIN_NAME); //Do nothing when not called correctly

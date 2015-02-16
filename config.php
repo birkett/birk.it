@@ -17,15 +17,5 @@ define('DOMAIN_NAME', 'http://birk.it/');
 //This is used in regex, should be the bare domain, no protocol, subdomain or slashes
 define('BASIC_DOMAIN_NAME', 'birk.it');
 
-//Quotes to display as a tagline under the header
-define(
-    'QUOTES',
-    array(
-        "Enter a long URL, get a nice short one back.",
-        "The opposite of a Swedish pump.",
-        "lolololol"
-    )
-);
-
 //Database connection
 define('DATABASE_FILENAME', 'sql/birkit.db');

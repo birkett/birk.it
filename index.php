@@ -1,6 +1,13 @@
 <?php
     require_once("config.php");
     PHPDefaults();
+
+    //Quotes to display as a tagline under the header
+    $QUOTES = array(
+        "Enter a long URL, get a nice short one back.",
+        "The opposite of a Swedish pump.",
+        "lolololol"
+    );
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,7 +22,7 @@
 <body>
     <div class="header">
         <h1><?php echo BASIC_DOMAIN_NAME; ?>  URL shortner</h1>
-        <h2><?php echo QUOTES[rand(0, count(QUOTES)-1)]; ?></h2>
+        <h2><?php echo $QUOTES[rand(0, count($QUOTES)-1)]; ?></h2>
     </div>
     <div class="container">
         <form>
