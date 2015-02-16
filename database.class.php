@@ -7,6 +7,8 @@
 
 namespace ABirkett;
 
+use PDO;
+
 class Database
 {
     private $mLink; //Store the connection link
