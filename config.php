@@ -23,5 +23,5 @@ $QUOTES = array (
 ); 
 
 //Database connection 
-define('DATABASE_FILENAME', 'birkit.db');
+define('DATABASE_FILENAME', 'sql/birkit.db');
 ?>

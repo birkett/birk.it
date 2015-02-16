@@ -17,13 +17,10 @@ class Database
 	public function __construct()
 	{
         try {
-            $this->mLink = new PDO(
-                "sqlite:",
-				DATABASE_FILENAME,
-                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-            );
+            $this->mLink = new PDO("sqlite:" . DATABASE_FILENAME);
+			$this->mLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
-            echo "Unable to connect to database: " . $this->mLink->errorInfo()[2];
+            echo "Unable to connect to database";
         }
 	}
 

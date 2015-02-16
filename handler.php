@@ -59,7 +59,7 @@ function GetOriginalURL($shorturl)
 		"SELECT original_url FROM urls WHERE short_url=:shorturl",
 		array(":shorturl" => $shorturl)
 	);
-	$row = Database::getInsance()->GetRow($result);
+	$row = Database::getInstance()->GetRow($result);
 	if(isset($row[0])) { return $row[0]; } return false;
 }
 
@@ -111,7 +111,7 @@ if(isset($_POST['input'])) //We are in generate mode
 }
 else if(isset($_GET['url'])) //We are in fetch mode
 {
-	$originalurl = GetOriginalURL(GetDatabase()->EscapeString($_GET['url']));
+	$originalurl = GetOriginalURL($_GET['url']);
 
 	if($originalurl) //If found, redicrect
 		Redirect("http://".$originalurl);
