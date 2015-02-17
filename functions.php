@@ -61,7 +61,7 @@ class Functions
             'INSERT INTO urls(original_url, short_url) VALUES(:inurl, :genurl)',
             array(
                 ':inurl' => $url,
-                ':genurl' => Generate()
+                ':genurl' => Functions::generate()
             )
         );
 
@@ -75,7 +75,7 @@ class Functions
      */
     public static function swapURL($url)
     {
-        if (preg_match('/'.BASIC_DOMAIN_NAME.'/i', $url) !== false) {
+        if (preg_match('/'.BASIC_DOMAIN_NAME.'/i', $url) === 1) {
             $query = 'SELECT original_url FROM urls WHERE short_url=:url';
             $url   = substr($url, (strlen($url) - 8));
         } else {
