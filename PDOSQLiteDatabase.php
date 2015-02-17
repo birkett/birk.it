@@ -62,7 +62,7 @@ class PDOSQLiteDatabase
     {
         static $database = null;
         if (isset($database) === false) {
-            $database = new Database();
+            $database = new PDOSQLiteDatabase();
         }
 
         return $database;

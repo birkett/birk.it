@@ -27,11 +27,11 @@ Functions::PHPDefaults();
 if (isset($_POST['input']) === true) {
     // We are in generate mode.
     if ($_POST['input'] === '') {
-        finish('URL cannot be blank', 400);
+        Functions::finish('URL cannot be blank', 400);
     }
 
     if (strlen($_POST['input']) > 2048) {
-        finish('Input URL too long!', 400);
+        Functions::finish('Input URL too long!', 400);
     }
 
     // Remove http:// or https://.
@@ -40,7 +40,7 @@ if (isset($_POST['input']) === true) {
     $inputurl = rtrim($inputurl, '/');
 
     // Check if link is already shortened, and return the full URL instead.
-    if (preg_match('/'.BASIC_DOMAIN_NAME.'/', $inputurl) !== false) {
+    if (preg_match('/'.BASIC_DOMAIN_NAME.'/', $inputurl) === 1) {
         $original = Functions::swapURL($inputurl);
         if ($original !== false) {
             // Add the http back in.
@@ -78,7 +78,7 @@ if (isset($_POST['input']) === true) {
     );
 
     Functions::replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
-    Functions::replaceTag('{YEAR}', date('Y', $page);
+    Functions::replaceTag('{YEAR}', date('Y'), $page);
     Functions::replaceTag(
         '{QUOTE}',
         $QUOTES[rand(0, (count($QUOTES) - 1))],
