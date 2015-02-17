@@ -23,7 +23,7 @@ function doaction()
                 box.value = xmlhttp.response;
             }
         }
-        xmlhttp.open("POST", "handler.php", true);
+        xmlhttp.open("POST", "index.php", true);
         var inputurl = encodeURIComponent(addslashes(box.value));
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("&input=" + inputurl);

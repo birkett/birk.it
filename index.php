@@ -1,6 +1,51 @@
 <?php
-    require_once("config.php");
-    PHPDefaults();
+require_once("config.php");
+require_once("functions.php");
+
+PHPDefaults();
+
+//-----------------------------------------------------------------------------
+// Main logic
+//-----------------------------------------------------------------------------
+if (isset($_POST['input'])) {
+    //We are in generate mode
+    if ($_POST['input'] == "") {
+        Finish("URL cannot be blank", 400);
+    }
+    if (strlen($_POST['input']) > 2048) {
+        Finish("Input URL too long!", 400);
+    }
+
+    //Remove http:// or https://
+    $inputurl = preg_replace('#^https?://#', '', strtolower($_POST['input']));
+    //Remove a trailing backslash
+    $inputurl = rtrim($inputurl, "/");
+
+    //Check if link is already shortened, and return the full URL instead
+    if (preg_match("/".BASIC_DOMAIN_NAME."/i", $inputurl)) {
+        $original = SwapURL($inputurl);
+        if ($original) {
+            Finish("http://".$original, 200); //Add the http back in
+        }
+        Finish("Not found!", 400);
+    }
+
+    if (!SwapURL($inputurl)) {
+        AddNewUrl($inputurl);
+    }
+    Finish(DOMAIN_NAME . SwapURL($inputurl), 200);
+} elseif (isset($_GET['url'])) {
+    //We are in fetch mode
+    $originalurl = SwapURL(DOMAIN_NAME . "/" . $_GET['url']);
+
+    if ($originalurl) {
+        Redirect("http://".$originalurl); //If found, redicrect
+    } else {
+        Redirect(DOMAIN_NAME); //Not found, go home
+    }
+} else {
+    //Render front page
+    $page = file_get_contents("template/main.tpl");
 
     //Quotes to display as a tagline under the header
     $QUOTES = array(
@@ -8,46 +53,9 @@
         "The opposite of a Swedish pump.",
         "lolololol"
     );
-?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title><?php echo BASIC_DOMAIN_NAME; ?> | Short URL's</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="birk.it URL shortening service.">
-    <link rel="stylesheet" href="css/main.css" />
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="js/actions.js"></script>
-</head>
-<body>
-    <div class="header">
-        <h1><?php echo BASIC_DOMAIN_NAME; ?>  URL shortner</h1>
-        <h2><?php echo $QUOTES[rand(0, count($QUOTES)-1)]; ?></h2>
-    </div>
-    <div class="container">
-        <form>
-            <input class="box" id="box" type="text" name="urlinput" placeholder="Enter a URL..." /><br />
-            <input class="submit" type="submit" name="submit" onclick="doaction(); return false;" />
-        </form>
-    </div>
-    <div class="infobox">
-        <p>Made by <a href="http://www.a-birkett.co.uk" target="_blank">Anthony Birkett</a>
-            for personal use, but open for the public.</p>
-        <h3>Super secret hidden features</h3>
-        <p>Enter a shortened URL to get the original</p>
-        <p>If someone has already shortened the same URL, you will get the same result</p>
-        <p>URL's don't have to be valid. Hide abusive messages for your friends!</p>
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
-            data-ad-client="ca-pub-3491498523960183" data-ad-slot="5861200158"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-    <div class="infobox">
-    <p>&copy; <?php echo date('Y'); ?> Anthony Birkett</p>
-    <p>By using this website, you agree to do so at your own risk. I take no responsibility for
-        content linked to from this website, and make no guarantees of availability.
-        Cookies are not used by this website, but may be used by Google AdSense.
-    </p>
-    </div>
-</body>
-</html>
+    
+    $page = replaceTag("{DOMAIN}", BASIC_DOMAIN_NAME, $page);
+    $page = replaceTag("{YEAR}", date("Y"), $page);
+    $page = replaceTag("{QUOTE}", $QUOTES[rand(0, count($QUOTES)-1)], $page);
+    echo $page;
+}
