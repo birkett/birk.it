@@ -5,8 +5,6 @@
     <meta charset="utf-8" />
     <meta name="description" content="birk.it URL shortening service.">
     <link rel="stylesheet" href="css/main.css" />
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="js/actions.js"></script>
 </head>
 <body>
     <div class="header">
@@ -38,5 +36,7 @@
         Cookies are not used by this website, but may be used by Google AdSense.
     </p>
     </div>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/actions.js"></script>
 </body>
 </html>
