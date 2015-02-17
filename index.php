@@ -15,10 +15,10 @@
 namespace ABirkett;
 
 require_once 'config.php';
-require_once 'database.class.php';
+require_once 'PDOSQLiteDatabase.php';
 require_once 'functions.php';
 
-PHPDefaults();
+Functions::PHPDefaults();
 
 /*
     Main logic
@@ -41,30 +41,30 @@ if (isset($_POST['input']) === true) {
 
     // Check if link is already shortened, and return the full URL instead.
     if (preg_match('/'.BASIC_DOMAIN_NAME.'/', $inputurl) !== false) {
-        $original = swapURL($inputurl);
+        $original = Functions::swapURL($inputurl);
         if ($original !== false) {
             // Add the http back in.
-            finish('http://'.$original, 200);
+            Functions::finish('http://'.$original, 200);
         }
 
-        finish('Not found!', 400);
+        Functions::finish('Not found!', 400);
     }
 
-    if (swapURL($inputurl) === false) {
-        addNewUrl($inputurl);
+    if (Functions::swapURL($inputurl) === false) {
+        Functions::addNewUrl($inputurl);
     }
 
-    finish(DOMAIN_NAME.swapURL($inputurl), 200);
+    Functions::finish(DOMAIN_NAME.Functions::swapURL($inputurl), 200);
 } elseif (isset($_GET['url']) === true) {
     // We are in fetch mode.
-    $originalurl = swapURL(DOMAIN_NAME.'/'.$_GET['url']);
+    $originalurl = Functions::swapURL(DOMAIN_NAME.'/'.$_GET['url']);
 
     if ($originalurl !== false) {
         // If found, redirect.
-        redirect('http://'.$originalurl);
+        Functions::redirect('http://'.$originalurl);
     } else {
         // Not found, go home.
-        redirect(DOMAIN_NAME);
+        Functions::redirect(DOMAIN_NAME);
     }
 } else {
     // Render front page.
@@ -77,8 +77,12 @@ if (isset($_POST['input']) === true) {
         'lolololol',
     );
 
-    replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
-    replaceTag('{YEAR}', date('Y', $page);
-    replaceTag('{QUOTE}', $QUOTES[rand(0, (count($QUOTES) - 1))], $page);
+    Functions::replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
+    Functions::replaceTag('{YEAR}', date('Y', $page);
+    Functions::replaceTag(
+        '{QUOTE}',
+        $QUOTES[rand(0, (count($QUOTES) - 1))],
+        $page
+    );
     echo $page;
-}
+}//end if

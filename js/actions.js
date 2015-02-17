@@ -14,14 +14,17 @@ function doaction()
         } else {
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
+
         xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4) {
+            if (xmlhttp.readyState === 4) {
                 switch (xmlhttp.status) {
                     case 200: box.className += " success"; break;
                     case 400: box.className += " failed"; break;
                 }
+
                 box.value = xmlhttp.response;
             }
+
         }
         xmlhttp.open("POST", "index.php", true);
         var inputurl = encodeURIComponent(addslashes(box.value));
@@ -29,4 +32,5 @@ function doaction()
         xmlhttp.send("&input=" + inputurl);
     });
     $(".box").show("slow");
+
 }

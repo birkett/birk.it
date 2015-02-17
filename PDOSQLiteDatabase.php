@@ -16,23 +16,27 @@ namespace ABirkett;
 
 use PDO;
 
-class Database
+class PDOSQLiteDatabase
 {
+
     /**
      * Store the current link to avoid reconnections
      * @var object $mLink
      */
     private $mLink;
 
+
     /**
      * Constructor
-     * @return none
      */
     public function __construct()
     {
         try {
             $this->mLink = new PDO('sqlite:'.DATABASE_FILENAME);
-            $this->mLink->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->mLink->setAttribute(
+                PDO::ATTR_ERRMODE,
+                PDO::ERRMODE_EXCEPTION
+            );
         } catch (\PDOException $e) {
             echo 'Unable to connect to database';
         }
@@ -42,7 +46,6 @@ class Database
 
     /**
      * Destructor
-     * @return none
      */
     public function __destruct()
     {
@@ -69,13 +72,13 @@ class Database
 
     /**
      * Run a query
-     * @param string  $query  Query string to run.
-     * @param mixed[] $params Array of parameters to bind.
-     * @return mixed[] Array of results
+     * @param string $query  Query string to run.
+     * @param array  $params Array of parameters to bind.
+     * @return array Array of results
      */
     public function runQuery($query, $params = array())
     {
-        if (!$this->mLink) {
+        if ($this->mLink === null) {
             return;
         }
 
@@ -90,22 +93,20 @@ class Database
 
     /**
      * Get single row from a result, until no results left
-     * @param mixed[] $result Array of rows
-     * @return mixed[] One row array or null when none left
+     * @param  array $result Array of rows
+     * @return void One row array or null when none left
      */
     public function getRow(&$result)
     {
-        if ($result === false) {
+        if ($result === null) {
             return;
         }
 
-        if (count($result) != 0) {
+        if (count($result) !== 0) {
             return array_shift($result);
         } else {
             return null;
         }
 
     }//end getRow()
-
-
 }//end class
