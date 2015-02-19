@@ -84,7 +84,7 @@ class PDOSQLiteDatabase
 
         $statement = $this->mLink->prepare($query);
         $statement->execute($params);
-        if ($statement->columnCount() != 0) {
+        if ($statement->columnCount() !== 0) {
             return $statement->fetchAll();
         }
 

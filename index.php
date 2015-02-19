@@ -26,16 +26,17 @@ Functions::PHPDefaults();
 
 if (isset($_POST['input']) === true) {
     // We are in generate mode.
-    if ($_POST['input'] === '') {
+    $longurl = filter_input(INPUT_POST, 'input', FILTER_SANITIZE_URL);
+    if ($longurl === '') {
         Functions::finish('URL cannot be blank', 400);
     }
 
-    if (strlen($_POST['input']) > 2048) {
+    if (strlen($longurl) > 2048) {
         Functions::finish('Input URL too long!', 400);
     }
 
     // Remove http:// or https://.
-    $inputurl = preg_replace('#^https?://#', '', strtolower($_POST['input']));
+    $inputurl = preg_replace('#^https?://#', '', strtolower($longurl));
     // Remove a trailing backslash.
     $inputurl = rtrim($inputurl, '/');
 
@@ -57,7 +58,8 @@ if (isset($_POST['input']) === true) {
     Functions::finish(DOMAIN_NAME.Functions::swapURL($inputurl), 200);
 } elseif (isset($_GET['url']) === true) {
     // We are in fetch mode.
-    $originalurl = Functions::swapURL(DOMAIN_NAME.'/'.$_GET['url']);
+    $shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
+    $originalurl = Functions::swapURL(DOMAIN_NAME.'/'.$shorturl);
 
     if ($originalurl !== false) {
         // If found, redirect.
