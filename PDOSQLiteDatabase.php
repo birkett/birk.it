@@ -131,18 +131,16 @@ class PDOSQLiteDatabase
      * @param  array $result Array of rows.
      * @return void One row array or null when none left
      */
-    public function getRow(array &$result)
+    public function getRow(&$result)
     {
         if ($result === null) {
             return null;
         }
 
-        if ($this->getNumRows($result) !== 0) {
-            $row = array_shift($result);
-
-            return $row;
+        if (count($result) !== 0) {
+            return array_shift($result);
         }
-
+        
         return null;
 
     }//end getRow()
