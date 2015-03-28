@@ -68,6 +68,8 @@ class Config
         ini_set('display_errors', 1);
         // Timezone for converting timestamps.
         date_default_timezone_set('Europe/London');
+        // Time in seconds to limit requests.
+        define('REQUEST_LIMIT', 30);
         // Where the site is hosted, should include protocol.
         define('DOMAIN_NAME', 'http://birk.it/');
         // Should be the bare domain, no protocol, subdomain or slashes.

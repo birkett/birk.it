@@ -37,6 +37,7 @@ namespace ABirkett;
 
 require_once 'classes\Autoloader.php';
 
+session_start();
 classes\Autoloader::init();
 $siteFunctions = new \ABirkett\classes\Functions();
 
@@ -49,6 +50,15 @@ $shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
 
 // Generate a new short URL.
 if (isset($longurl) === true) {
+    if($siteFunctions->isRequestLimited() === true)
+    {
+        $siteFunctions->finish(
+            'Please wait '.REQUEST_LIMIT.' seconds between requests.',
+            400
+        );
+        return;
+    }
+
     if ($longurl === '') {
         $siteFunctions->finish('URL cannot be blank', 400);
         return;
