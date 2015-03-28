@@ -1,6 +1,27 @@
 <?php
 /**
- * General site functions
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 Anthony Birkett
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
  *
  * PHP Version 5.4
  *
@@ -8,7 +29,7 @@
  * @package   Birk.it
  * @author    Anthony Birkett <anthony@a-birkett.co.uk>
  * @copyright 2015 Anthony Birkett
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/MIT  The MIT License (MIT)
  * @link      http://birk.it
  */
 
@@ -16,8 +37,20 @@ namespace ABirkett;
 
 use ABirkett\PDOSQLiteDatabase as Database;
 
+/**
+ * Basic site fuincions.
+ *
+ * @category  Functions
+ * @package   Birk.it
+ * @author    Anthony Birkett <anthony@a-birkett.co.uk>
+ * @copyright 2015 Anthony Birkett
+ * @license   http://opensource.org/licenses/MIT  The MIT License (MIT)
+ * @link      http://birk.it
+ */
 class Functions
 {
+
+
     /**
      * Setup some default PHP settings
      * @return void
@@ -35,7 +68,7 @@ class Functions
 
     /**
      * Generate a random 8 character alphanumeric string
-     * @return string
+     * @return string Short URL.
      */
     public static function generate()
     {
@@ -60,8 +93,8 @@ class Functions
         Database::getInstance()->runQuery(
             'INSERT INTO urls(original_url, short_url) VALUES(:inurl, :genurl)',
             array(
-                ':inurl' => $url,
-                ':genurl' => Functions::generate()
+             ':inurl'  => $url,
+             ':genurl' => self::generate(),
             )
         );
 
@@ -71,7 +104,7 @@ class Functions
     /**
      * Swap a long to short, or short to long URL
      * @param string $url URL to swap.
-     * @return Opposite URL or false on not found
+     * @return string Opposite URL or false on not found
      */
     public static function swapURL($url)
     {
@@ -86,7 +119,7 @@ class Functions
             $query,
             array(':url' => $url)
         );
-        $row = Database::getInstance()->getRow($result);
+        $row    = Database::getInstance()->getRow($result);
         if (isset($row[0]) !== false) {
             return $row[0];
         }
