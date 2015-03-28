@@ -39,7 +39,7 @@ require_once 'config.php';
 require_once 'PDOSQLiteDatabase.php';
 require_once 'functions.php';
 
-Functions::PHPDefaults();
+$siteFunctions = new Functions();
 
 /*
  * Site front page and main logic.
@@ -51,11 +51,11 @@ $shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
 if (isset($longurl) === true) {
     // We are in generate mode.
     if ($longurl === '') {
-        Functions::finish('URL cannot be blank', 400);
+        $siteFunctions->finish('URL cannot be blank', 400);
     }
 
     if (strlen($longurl) > 2048) {
-        Functions::finish('Input URL too long!', 400);
+        $siteFunctions->finish('Input URL too long!', 400);
     }
 
     // Remove http:// or https://.
@@ -65,30 +65,30 @@ if (isset($longurl) === true) {
 
     // Check if link is already shortened, and return the full URL instead.
     if (preg_match('/'.BASIC_DOMAIN_NAME.'/', $inputurl) === 1) {
-        $original = Functions::swapURL($inputurl);
+        $original = $siteFunctions->swapURL($inputurl);
         if ($original !== false) {
             // Add the http back in.
-            Functions::finish('http://'.$original, 200);
+            $siteFunctions->finish('http://'.$original, 200);
         }
 
-        Functions::finish('Not found!', 400);
+        $siteFunctions->finish('Not found!', 400);
     }
 
-    if (Functions::swapURL($inputurl) === false) {
-        Functions::addNewUrl($inputurl);
+    if ($siteFunctions->swapURL($inputurl) === false) {
+        $siteFunctions->addNewUrl($inputurl);
     }
 
-    Functions::finish(DOMAIN_NAME.Functions::swapURL($inputurl), 200);
+    $siteFunctions->finish(DOMAIN_NAME.$siteFunctions->swapURL($inputurl), 200);
 } else if (isset($shorturl) === true) {
     // We are in fetch mode.
-    $originalurl = Functions::swapURL(DOMAIN_NAME.'/'.$shorturl);
+    $originalurl = $siteFunctions->swapURL(DOMAIN_NAME.'/'.$shorturl);
 
     if ($originalurl !== false) {
         // If found, redirect.
-        Functions::redirect('http://'.$originalurl);
+        $siteFunctions->redirect('http://'.$originalurl);
     } else {
         // Not found, go home.
-        Functions::redirect(DOMAIN_NAME);
+        $siteFunctions->redirect(DOMAIN_NAME);
     }
 } else {
     // Render front page.
@@ -101,9 +101,9 @@ if (isset($longurl) === true) {
                'lolololol',
               );
 
-    Functions::replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
-    Functions::replaceTag('{YEAR}', date('Y'), $page);
-    Functions::replaceTag(
+    $siteFunctions->replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
+    $siteFunctions->replaceTag('{YEAR}', date('Y'), $page);
+    $siteFunctions->replaceTag(
         '{QUOTE}',
         $QUOTES[rand(0, (count($QUOTES) - 1))],
         $page

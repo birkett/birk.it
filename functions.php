@@ -52,10 +52,21 @@ class Functions
 
 
     /**
+     * Constructor
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->PHPDefaults();
+
+    }//end __construct()
+
+
+    /**
      * Setup some default PHP settings
      * @return void
      */
-    public static function PHPDefaults()
+    public function PHPDefaults()
     {
         // Show PHP errors and warnings.
         error_reporting(E_ALL);
@@ -70,7 +81,7 @@ class Functions
      * Generate a random 8 character alphanumeric string
      * @return string Short URL.
      */
-    public static function generate()
+    public function generate()
     {
         $chars  = '0123456789abcdefghijklmnopqrstuvwxyz';
         $result = '';
@@ -88,13 +99,13 @@ class Functions
      * @param string $url Long URL to add.
      * @return void
      */
-    public static function addNewURL($url)
+    public function addNewURL($url)
     {
         Database::getInstance()->runQuery(
             'INSERT INTO urls(original_url, short_url) VALUES(:inurl, :genurl)',
             array(
              ':inurl'  => $url,
-             ':genurl' => self::generate(),
+             ':genurl' => $this->generate(),
             )
         );
 
@@ -106,7 +117,7 @@ class Functions
      * @param string $url URL to swap.
      * @return string Opposite URL or false on not found
      */
-    public static function swapURL($url)
+    public function swapURL($url)
     {
         if (preg_match('/'.BASIC_DOMAIN_NAME.'/i', $url) === 1) {
             $query = 'SELECT original_url FROM urls WHERE short_url=:url';
@@ -134,7 +145,7 @@ class Functions
      * @param string $url URL to redirect to.
      * @return void
      */
-    public static function redirect($url)
+    public function redirect($url)
     {
         http_response_code(302);
         header('Location: '.$url);
@@ -149,7 +160,7 @@ class Functions
      * @param integer $code HTTP status code.
      * @return void
      */
-    public static function finish($msg, $code)
+    public function finish($msg, $code)
     {
         http_response_code($code);
         exit($msg);
@@ -164,7 +175,7 @@ class Functions
      * @param string $output Unparsed template passed by reference.
      * @return void
      */
-    public static function replaceTag($tag, $string, &$output)
+    public function replaceTag($tag, $string, &$output)
     {
         $output = str_replace($tag, $string, $output);
 
