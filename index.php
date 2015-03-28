@@ -35,7 +35,7 @@
 
 namespace ABirkett;
 
-require_once 'classes\Autoloader.php';
+require_once 'classes/Autoloader.php';
 
 session_start();
 classes\Autoloader::init();
