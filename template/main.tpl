@@ -31,6 +31,7 @@
     </div>
     <div class="infobox">
     <p>&copy; {YEAR} Anthony Birkett</p>
+    <p><a href="https://www.github.com/birkett/birk.it/"><img src="img/github.png" alt="GitHub"><p>Source code available on GitHub</p></a></p>
     <p>By using this website, you agree to do so at your own risk. I take no responsibility for
         content linked to from this website, and make no guarantees of availability.
         Cookies are not used by this website, but may be used by Google AdSense.
