@@ -1,6 +1,27 @@
 <?php
 /**
- * Site front page and logic
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 Anthony Birkett
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
  *
  * PHP Version 5.4
  *
@@ -8,7 +29,7 @@
  * @package   Birk.it
  * @author    Anthony Birkett <anthony@a-birkett.co.uk>
  * @copyright 2015 Anthony Birkett
- * @license   http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/MIT  The MIT License (MIT)
  * @link      http://birk.it
  */
 
@@ -21,12 +42,14 @@ require_once 'functions.php';
 Functions::PHPDefaults();
 
 /*
-    Main logic
-*/
+ * Site front page and main logic.
+ */
 
-if (isset($_POST['input']) === true) {
+$longurl  = filter_input(INPUT_POST, 'input', FILTER_SANITIZE_URL);
+$shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
+
+if (isset($longurl) === true) {
     // We are in generate mode.
-    $longurl = filter_input(INPUT_POST, 'input', FILTER_SANITIZE_URL);
     if ($longurl === '') {
         Functions::finish('URL cannot be blank', 400);
     }
@@ -56,9 +79,8 @@ if (isset($_POST['input']) === true) {
     }
 
     Functions::finish(DOMAIN_NAME.Functions::swapURL($inputurl), 200);
-} elseif (isset($_GET['url']) === true) {
+} else if (isset($shorturl) === true) {
     // We are in fetch mode.
-    $shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
     $originalurl = Functions::swapURL(DOMAIN_NAME.'/'.$shorturl);
 
     if ($originalurl !== false) {
@@ -74,10 +96,10 @@ if (isset($_POST['input']) === true) {
 
     // Quotes to display as a tagline under the header.
     $QUOTES = array(
-        'Enter a long URL, get a nice short one back',
-        'The opposite of a Swedish pump',
-        'lolololol',
-    );
+               'Enter a long URL, get a nice short one back',
+               'The opposite of a Swedish pump',
+               'lolololol',
+              );
 
     Functions::replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
     Functions::replaceTag('{YEAR}', date('Y'), $page);
