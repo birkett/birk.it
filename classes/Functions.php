@@ -161,23 +161,22 @@ class Functions
      */
     public function isRequestLimited()
     {
-        // Allow the request if checks pass.
-        $return = false;
-
         // New user, always allow the first time.
         if(isset($_SESSION['lastRequest']) === false)
         {
-            $return = false;
+            $_SESSION['lastRequest'] = time();
+            return false;
         }
 
         // Currently time limited, deny the request.
         if(($_SESSION['lastRequest'] + REQUEST_LIMIT) > time())
         {
-            $return = true;
+            $_SESSION['lastRequest'] = time();
+            return true;
         }
 
         $_SESSION['lastRequest'] = time();
-        return $return;
+        return false;
 
     }//end isRequestLimited()
 }//end class
