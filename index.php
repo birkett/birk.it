@@ -35,11 +35,10 @@
 
 namespace ABirkett;
 
-require_once 'config.php';
-require_once 'PDOSQLiteDatabase.php';
-require_once 'functions.php';
+require_once 'classes\Autoloader.php';
 
-$siteFunctions = new Functions();
+classes\Autoloader::init();
+$siteFunctions = new \ABirkett\classes\Functions();
 
 /*
  * Site front page and main logic.
@@ -48,8 +47,8 @@ $siteFunctions = new Functions();
 $longurl  = filter_input(INPUT_POST, 'input', FILTER_SANITIZE_URL);
 $shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
 
+// Generate a new short URL.
 if (isset($longurl) === true) {
-    // We are in generate mode.
     if ($longurl === '') {
         $siteFunctions->finish('URL cannot be blank', 400);
     }
@@ -79,8 +78,10 @@ if (isset($longurl) === true) {
     }
 
     $siteFunctions->finish(DOMAIN_NAME.$siteFunctions->swapURL($inputurl), 200);
-} else if (isset($shorturl) === true) {
-    // We are in fetch mode.
+}//end if
+
+// Redirect to a long URL from a given short URL.
+if (isset($shorturl) === true) {
     $originalurl = $siteFunctions->swapURL(DOMAIN_NAME.'/'.$shorturl);
 
     if ($originalurl !== false) {
@@ -90,23 +91,23 @@ if (isset($longurl) === true) {
         // Not found, go home.
         $siteFunctions->redirect(DOMAIN_NAME);
     }
-} else {
-    // Render front page.
-    $page = file_get_contents('template/main.tpl');
-
-    // Quotes to display as a tagline under the header.
-    $QUOTES = array(
-               'Enter a long URL, get a nice short one back',
-               'The opposite of a Swedish pump',
-               'lolololol',
-              );
-
-    $siteFunctions->replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
-    $siteFunctions->replaceTag('{YEAR}', date('Y'), $page);
-    $siteFunctions->replaceTag(
-        '{QUOTE}',
-        $QUOTES[rand(0, (count($QUOTES) - 1))],
-        $page
-    );
-    echo $page;
 }//end if
+
+// Default to rendering the front page.
+$page = file_get_contents('template/main.tpl');
+
+// Quotes to display as a tagline under the header.
+$QUOTES = array(
+           'Enter a long URL, get a nice short one back',
+           'The opposite of a Swedish pump',
+           'lolololol',
+          );
+
+$siteFunctions->replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
+$siteFunctions->replaceTag('{YEAR}', date('Y'), $page);
+$siteFunctions->replaceTag(
+    '{QUOTE}',
+    $QUOTES[rand(0, (count($QUOTES) - 1))],
+    $page
+);
+echo $page;

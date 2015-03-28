@@ -26,7 +26,7 @@
  * PHP Version 5.4
  *
  * @category  Index
- * @package   birk.it
+ * @package   Birk.it
  * @author    Anthony Birkett <anthony@a-birkett.co.uk>
  * @copyright 2015 Anthony Birkett
  * @license   http://opensource.org/licenses/MIT  The MIT License (MIT)

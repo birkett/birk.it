@@ -33,9 +33,9 @@
  * @link      http://birk.it
  */
 
-namespace ABirkett;
+namespace ABirkett\classes;
 
-use ABirkett\PDOSQLiteDatabase as Database;
+use ABirkett\classes\PDOSQLiteDatabase as Database;
 
 /**
  * Basic site fuincions.
@@ -49,32 +49,6 @@ use ABirkett\PDOSQLiteDatabase as Database;
  */
 class Functions
 {
-
-
-    /**
-     * Constructor
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->PHPDefaults();
-
-    }//end __construct()
-
-
-    /**
-     * Setup some default PHP settings
-     * @return void
-     */
-    public function PHPDefaults()
-    {
-        // Show PHP errors and warnings.
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        // Timezone for converting timestamps.
-        date_default_timezone_set('Europe/London');
-
-    }//end PHPDefaults()
 
 
     /**

@@ -33,7 +33,7 @@
  * @link      http://birk.it
  */
 
-namespace ABirkett;
+namespace ABirkett\classes;
 
 use PDO;
 
@@ -131,7 +131,7 @@ class PDOSQLiteDatabase
      * @param  array $result Array of rows.
      * @return void One row array or null when none left
      */
-    public function getRow(&$result)
+    public function getRow(array &$result)
     {
         if ($result === null) {
             return null;
@@ -140,7 +140,7 @@ class PDOSQLiteDatabase
         if (count($result) !== 0) {
             return array_shift($result);
         }
-        
+
         return null;
 
     }//end getRow()
