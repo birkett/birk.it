@@ -51,10 +51,12 @@ $shorturl = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
 if (isset($longurl) === true) {
     if ($longurl === '') {
         $siteFunctions->finish('URL cannot be blank', 400);
+        return;
     }
 
     if (strlen($longurl) > 2048) {
         $siteFunctions->finish('Input URL too long!', 400);
+        return;
     }
 
     // Remove http:// or https://.
@@ -68,9 +70,11 @@ if (isset($longurl) === true) {
         if ($original !== false) {
             // Add the http back in.
             $siteFunctions->finish('http://'.$original, 200);
+            return;
         }
 
         $siteFunctions->finish('Not found!', 400);
+        return;
     }
 
     if ($siteFunctions->swapURL($inputurl) === false) {
@@ -78,6 +82,7 @@ if (isset($longurl) === true) {
     }
 
     $siteFunctions->finish(DOMAIN_NAME.$siteFunctions->swapURL($inputurl), 200);
+    return;
 }//end if
 
 // Redirect to a long URL from a given short URL.
@@ -87,10 +92,12 @@ if (isset($shorturl) === true) {
     if ($originalurl !== false) {
         // If found, redirect.
         $siteFunctions->redirect('http://'.$originalurl);
-    } else {
-        // Not found, go home.
-        $siteFunctions->redirect(DOMAIN_NAME);
+        return;
     }
+
+    // Not found, go home.
+    $siteFunctions->redirect(DOMAIN_NAME);
+    return;
 }//end if
 
 // Default to rendering the front page.
@@ -103,11 +110,9 @@ $QUOTES = array(
            'lolololol',
           );
 
+$quoteID = rand(0, (count($QUOTES) - 1));
+
 $siteFunctions->replaceTag('{DOMAIN}', BASIC_DOMAIN_NAME, $page);
 $siteFunctions->replaceTag('{YEAR}', date('Y'), $page);
-$siteFunctions->replaceTag(
-    '{QUOTE}',
-    $QUOTES[rand(0, (count($QUOTES) - 1))],
-    $page
-);
+$siteFunctions->replaceTag('{QUOTE}', $QUOTES[$quoteID], $page);
 echo $page;

@@ -93,11 +93,11 @@ class Functions
      */
     public function swapURL($url)
     {
+        $query = 'SELECT short_url FROM urls WHERE original_url=:url';
+
         if (preg_match('/'.BASIC_DOMAIN_NAME.'/i', $url) === 1) {
             $query = 'SELECT original_url FROM urls WHERE short_url=:url';
             $url   = substr($url, (strlen($url) - 8));
-        } else {
-            $query = 'SELECT short_url FROM urls WHERE original_url=:url';
         }
 
         $result = Database::getInstance()->runQuery(
@@ -123,7 +123,6 @@ class Functions
     {
         http_response_code(302);
         header('Location: '.$url);
-        exit();
 
     }//end redirect()
 
@@ -137,7 +136,7 @@ class Functions
     public function finish($msg, $code)
     {
         http_response_code($code);
-        exit($msg);
+        echo $msg;
 
     }//end finish()
 
